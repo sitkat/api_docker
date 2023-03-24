@@ -1,0 +1,5 @@
+username: admin
+password: 225577
+host: db_notes
+port: 6101
+databaseName: postgres

@@ -1,0 +1,42 @@
+version: '3.5'
+
+services:
+  notes:
+    build: ./notes_api
+    container_name: notes
+    environment:
+      - SECRET_KEY=SECRET_KEY
+      - PORT=6100
+      - DB_USERNAME=admin
+      - DB_PASSWORD=225577
+      - DB_HOST=db_notes
+      - DB_PORT=6101
+      - DB_NAME=postgres
+    depends_on:
+      - db_notes
+    networks:
+      - internal_net
+
+  db_notes:
+    container_name: db_notes
+    ports:
+      - "6101:6101"
+    environment:
+      - POSTGRES_PASSWORD=225577
+      - POSTGRES_USER=admin
+    image: postgres:14.3-alpine
+    command:
+      - "postgres"
+      - "-c"
+      - "port=6101"
+    volumes:
+      - db_notes_vol:/var/lib/postgresql/notes/
+    networks:
+      - internal_net
+
+volumes:
+  db_notes_vol: {}
+
+networks:
+  internal_net:
+    driver: bridge
